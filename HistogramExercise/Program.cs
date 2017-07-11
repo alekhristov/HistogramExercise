@@ -10,6 +10,7 @@ namespace HistogramExercise
     {
         static void Main(string[] args)
         {
+            var asd = 1;
         }
     }
 }
