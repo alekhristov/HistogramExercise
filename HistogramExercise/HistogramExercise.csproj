@@ -48,8 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Colors.cs" />
-    <Compile Include="HtmlAgilityPack\HtmlDocument.cs" />
+    <Compile Include="Color.cs" />
+    <Compile Include="ImageParser.cs" />
+    <Compile Include="ImageUrlDownloader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
