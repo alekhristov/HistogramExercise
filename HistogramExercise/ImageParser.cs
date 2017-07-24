@@ -31,7 +31,7 @@ namespace HistogramExercise
             }
         }
 
-        public string HtmlParser(string urlAddress)
+        private string LoadUrl()
         {
             string htmlString = string.Empty;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
@@ -59,8 +59,10 @@ namespace HistogramExercise
             }
             return htmlString;
         }
-        public List<string> ImageHtmlExtractor(string urlAddress, List<string> listOfImagePaths, string htmlString)
+        public List<string> ExtractImages(List<string> listOfImagePaths)
         {
+            string htmlString = LoadUrl();
+
             var imgPattern = @"<img.+?src=[\""'](?<imgUrl>(?:https?|www|\/).+?)[\\""'].*?>";
 
             var matchedImages = Regex.Matches(htmlString, imgPattern);

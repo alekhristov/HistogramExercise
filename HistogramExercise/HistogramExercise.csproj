@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicColor.cs" />
     <Compile Include="Color.cs" />
+    <Compile Include="Picture.cs" />
     <Compile Include="ImageParser.cs" />
     <Compile Include="ImageUrlDownloader.cs" />
     <Compile Include="Program.cs" />

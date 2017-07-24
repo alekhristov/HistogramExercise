@@ -34,8 +34,7 @@ namespace HistogramExercise
             try
             {
                 var imageParser = new ImageParser(urlAddress);
-                var htmlString = imageParser.HtmlParser(urlAddress);
-                listOfImagePaths = imageParser.ImageHtmlExtractor(urlAddress, listOfImagePaths, htmlString);
+                listOfImagePaths = imageParser.ExtractImages(listOfImagePaths);
 
                 var imageUrlDownloader = new ImageUrlDownloader(urlAddress);
                 imageUrlDownloader.DownloadImagesFromUrl(urlAddress, listOfImagePaths);
@@ -47,9 +46,11 @@ namespace HistogramExercise
 
             string[] fileEntries = Directory.GetFiles(@"C:\Users\alek.hristov\Pictures\HistogramTask\");
 
-            foreach (string image in fileEntries)
+            foreach (string pictureName in fileEntries)
             {
-                using (var bitmap = new Bitmap(image))
+                //var picture = new Picture(pictureName);
+
+                using (var bitmap = new Bitmap(pictureName))
                 {
                     GetPixels(bitmap, dictOfColors);
                 }
