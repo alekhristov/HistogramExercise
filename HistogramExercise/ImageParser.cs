@@ -59,7 +59,8 @@ namespace HistogramExercise
             }
             return htmlString;
         }
-        public List<string> ExtractImages(List<string> listOfImagePaths)
+
+        public List<string> ExtractImages()
         {
             string htmlString = LoadUrl();
 
@@ -78,6 +79,5 @@ namespace HistogramExercise
             }
             return listOfImagePaths;
         }
-
     }
 }

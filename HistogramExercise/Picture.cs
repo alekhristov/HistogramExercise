@@ -1,29 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HistogramExercise
 {
-    class Picture
+    internal class Picture
     {
         private string name;
-        private Dictionary<BasicColor, int> dictOfColors;
 
         public Picture(string name)
         {
             this.name = name;
-            this.dictOfColors = new Dictionary<BasicColor, int>();
         }
 
-        public void GetImagePixels(string name)
+        public Dictionary<BasicColor, int> GetImagePixelsAndGetTheirColors(Dictionary<BasicColor, int> dictOfColors)
         {
             using (var bitmap = new Bitmap(name))
             {
                 GetPixels(bitmap, dictOfColors);
             }
+            return dictOfColors;
         }
 
         private void GetPixels(Bitmap bitmap, Dictionary<BasicColor, int> dictOfColors)
@@ -43,7 +39,7 @@ namespace HistogramExercise
         {
             double distance = double.MaxValue;
             double minDistance = double.MaxValue;
-            var colorName = string.Empty;
+            BasicColor nearestColor = BasicColor.BasicColorsArray[0];
 
             double r = pixel.R;
             double g = pixel.G;
@@ -56,7 +52,16 @@ namespace HistogramExercise
                 if (distance < minDistance)
                 {
                     minDistance = distance;
+                    nearestColor = basicColor;
                 }
+            }
+            if (!dictOfColors.ContainsKey(nearestColor))
+            {
+                dictOfColors[nearestColor] = 0;
+            }
+            if (dictOfColors.ContainsKey(nearestColor))
+            {
+                dictOfColors[nearestColor]++;
             }
         }
     }

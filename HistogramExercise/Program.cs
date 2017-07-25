@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -26,18 +25,18 @@ namespace HistogramExercise
     {
         private static void Main(string[] args)
         {
-            string urlAddress = "http://www.chelseafc.com/";
+            string urlAddress = "http://www.chelseafc.com/matches/fixtures---results.html";
 
             var listOfImagePaths = new List<string>();
-            var dictOfColors = new Dictionary<string, int>();
+            var dictOfColors = new Dictionary<BasicColor, int>();
 
             try
             {
                 var imageParser = new ImageParser(urlAddress);
-                listOfImagePaths = imageParser.ExtractImages(listOfImagePaths);
+                listOfImagePaths = imageParser.ExtractImages();
 
                 var imageUrlDownloader = new ImageUrlDownloader(urlAddress);
-                imageUrlDownloader.DownloadImagesFromUrl(urlAddress, listOfImagePaths);
+                imageUrlDownloader.DownloadImagesFromUrl(listOfImagePaths);
             }
             catch (ArgumentNullException ex)
             {
@@ -48,137 +47,11 @@ namespace HistogramExercise
 
             foreach (string pictureName in fileEntries)
             {
-                //var picture = new Picture(pictureName);
-
-                using (var bitmap = new Bitmap(pictureName))
-                {
-                    GetPixels(bitmap, dictOfColors);
-                }
+                var picture = new Picture(pictureName);
+                dictOfColors = picture.GetImagePixelsAndGetTheirColors(dictOfColors);
             }
 
             var topFiveColors = dictOfColors.OrderByDescending(a => a.Value).Take(5).ToList();
-        }
-
-        public static void GetPixels(Bitmap bitmap, Dictionary<string, int> dictOfColors)
-        {
-            for (int x = 0; x < bitmap.Width; x++)
-            {
-                for (int y = 0; y < bitmap.Height; y++)
-                {
-                    System.Drawing.Color pixel = bitmap.GetPixel(x, y);
-
-                    FindingTheNearestColor(pixel, dictOfColors);
-                }
-            }
-        }
-
-        private static void FindingTheNearestColor(System.Drawing.Color pixel, Dictionary<string, int> dictOfColors)
-        {
-            double distance = double.MaxValue;
-            double minDistance = double.MaxValue;
-            var colorName = string.Empty;
-
-            double r = pixel.R;
-            double g = pixel.G;
-            double b = pixel.B;
-
-            var black = new Color(0, 0, 0);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((black.R - r) * (0.3), 2) + Math.Pow((black.G - g) * (0.59), 2) + Math.Pow((black.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "black";
-            }
-            var white = new Color(255, 255, 255);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((white.R - r) * (0.3), 2) + Math.Pow((white.G - g) * (0.59), 2) + Math.Pow((white.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "white";
-            }
-            var red = new Color(255, 0, 0);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((red.R - r) * (0.3), 2) + Math.Pow((red.G - g) * (0.59), 2) + Math.Pow((red.B - b) * (0.11), 2)));
-
-            if (Math.Abs(distance) < minDistance)
-            {
-                minDistance = distance;
-                colorName = "red";
-            }
-            var blue = new Color(0, 0, 255);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((blue.R - r) * (0.3), 2) + Math.Pow((blue.G - g) * (0.59), 2) + Math.Pow((blue.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "blue";
-            }
-            var yellow = new Color(255, 255, 0);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((yellow.R - r) * (0.3), 2) + Math.Pow((yellow.G - g) * (0.59), 2) + Math.Pow((yellow.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "yellow";
-            }
-            var orange = new Color(255, 165, 0);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((orange.R - r) * (0.3), 2) + Math.Pow((orange.G - g) * (0.59), 2) + Math.Pow((orange.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "orange";
-            }
-            var grey = new Color(128, 128, 128);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((grey.R - r) * (0.3), 2) + Math.Pow((grey.G - g) * (0.59), 2) + Math.Pow((grey.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "grey";
-            }
-            var green = new Color(0, 128, 0);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((green.R - r) * (0.3), 2) + Math.Pow((green.G - g) * (0.59), 2) + Math.Pow((green.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "green";
-            }
-            var purple = new Color(128, 0, 128);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((purple.R - r) * (0.3), 2) + Math.Pow((purple.G - g) * (0.59), 2) + Math.Pow((purple.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "purple";
-            }
-            var pink = new Color(128, 0, 128);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((pink.R - r) * (0.3), 2) + Math.Pow((pink.G - g) * (0.59), 2) + Math.Pow((pink.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "pink";
-            }
-            var brown = new Color(160, 82, 45);
-            distance = Math.Sqrt(Math.Abs(Math.Pow((brown.R - r) * (0.3), 2) + Math.Pow((brown.G - g) * (0.59), 2) + Math.Pow((brown.B - b) * (0.11), 2)));
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                colorName = "brown";
-            }
-
-            if (!dictOfColors.ContainsKey(colorName))
-            {
-                dictOfColors[colorName] = 0;
-            }
-            if (dictOfColors.ContainsKey(colorName))
-            {
-                dictOfColors[colorName]++;
-            }
         }
     }
 }

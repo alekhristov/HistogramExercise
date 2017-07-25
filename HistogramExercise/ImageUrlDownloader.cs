@@ -5,7 +5,7 @@ using System.Net;
 
 namespace HistogramExercise
 {
-    class ImageUrlDownloader
+    internal class ImageUrlDownloader
     {
         private string urlAddress;
 
@@ -13,6 +13,7 @@ namespace HistogramExercise
         {
             this.UrlAddress = urlAddress;
         }
+
         public string UrlAddress
         {
             get { return this.urlAddress; }
@@ -26,12 +27,14 @@ namespace HistogramExercise
             }
         }
 
-        public void DownloadImagesFromUrl(string urlAddress, List<string> listOfImagePaths)
+        public void DownloadImagesFromUrl(List<string> listOfImagePaths)
         {
             using (WebClient webClient = new WebClient())
             {
                 foreach (var image in listOfImagePaths)
                 {
+                    var primaryUrlEndIndex = urlAddress.IndexOf(@"/", 9);
+                    var primaryUrl = urlAddress.Substring(0, primaryUrlEndIndex);
                     var index = image.LastIndexOf(@"/");
                     var filePath = image.Substring(index + 1);
 
@@ -39,7 +42,7 @@ namespace HistogramExercise
                     {
                         if (image.StartsWith("/"))
                         {
-                            webClient.DownloadFile(new Uri(urlAddress + image.Substring(1)), @"C:\Users\alek.hristov\Pictures\HistogramTask\" + filePath);
+                            webClient.DownloadFile(new Uri(primaryUrl + image.Substring(1)), @"C:\Users\alek.hristov\Pictures\HistogramTask\" + filePath);
                         }
                         else if (image.StartsWith(@"http://"))
                         {
