@@ -33,7 +33,7 @@ namespace HistogramExercise
             {
                 foreach (var image in listOfImagePaths)
                 {
-                    var primaryUrlEndIndex = urlAddress.IndexOf(@"/", 9);
+                    var primaryUrlEndIndex = urlAddress.IndexOf(@"/", 8);
                     var primaryUrl = urlAddress.Substring(0, primaryUrlEndIndex);
                     var index = image.LastIndexOf(@"/");
                     var filePath = image.Substring(index + 1);
