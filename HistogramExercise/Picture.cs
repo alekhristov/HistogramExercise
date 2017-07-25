@@ -47,7 +47,7 @@ namespace HistogramExercise
 
             foreach (var basicColor in BasicColor.BasicColorsArray)
             {
-                distance = Math.Sqrt(Math.Abs(Math.Pow((basicColor.Color.R - r) * (0.3), 2) + Math.Pow((basicColor.Color.R - g) * (0.59), 2) + Math.Pow((basicColor.Color.R - b) * (0.11), 2)));
+                distance = Math.Sqrt(Math.Pow((basicColor.Color.R - r) * (0.3), 2) + Math.Pow((basicColor.Color.G - g) * (0.59), 2) + Math.Pow((basicColor.Color.B - b) * (0.11), 2));
 
                 if (distance < minDistance)
                 {

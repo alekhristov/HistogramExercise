@@ -25,7 +25,7 @@ namespace HistogramExercise
     {
         private static void Main(string[] args)
         {
-            string urlAddress = "http://www.chelseafc.com/matches/fixtures---results.html";
+            string urlAddress = "http://yesofcorsa.com/red/";
 
             var listOfImagePaths = new List<string>();
             var dictOfColors = new Dictionary<BasicColor, int>();
@@ -43,7 +43,7 @@ namespace HistogramExercise
                 Console.WriteLine(ex.Message);
             }
 
-            string[] fileEntries = Directory.GetFiles(@"C:\Users\alek.hristov\Pictures\HistogramTask\");
+            string[] fileEntries = Directory.GetFiles(@"C:\Users\alekhristov\Pictures\HistogramTask\");
 
             foreach (string pictureName in fileEntries)
             {

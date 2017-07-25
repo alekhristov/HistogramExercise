@@ -33,20 +33,20 @@ namespace HistogramExercise
             {
                 foreach (var image in listOfImagePaths)
                 {
-                    var primaryUrlEndIndex = urlAddress.IndexOf(@"/", 8);
-                    var primaryUrl = urlAddress.Substring(0, primaryUrlEndIndex);
+                    var primaryUrlEndIndex = urlAddress.IndexOf(@"/", 9);
+                    var primaryUrl = urlAddress.Substring(0, primaryUrlEndIndex+1);
                     var index = image.LastIndexOf(@"/");
                     var filePath = image.Substring(index + 1);
 
-                    if (!File.Exists(@"C:\Users\alek.hristov\Pictures\HistogramTask\" + filePath))
+                    if (!File.Exists(@"C:\Users\alekhristov\Pictures\HistogramTask\" + filePath))
                     {
                         if (image.StartsWith("/"))
                         {
-                            webClient.DownloadFile(new Uri(primaryUrl + image.Substring(1)), @"C:\Users\alek.hristov\Pictures\HistogramTask\" + filePath);
+                            webClient.DownloadFile(new Uri(primaryUrl + image.Substring(1)), @"C:\Users\alekhristov\Pictures\HistogramTask\" + filePath);
                         }
-                        else if (image.StartsWith(@"http://"))
+                        else if (image.StartsWith(@"http"))
                         {
-                            webClient.DownloadFile(new Uri(image), @"C:\Users\alek.hristov\Pictures\HistogramTask\" + filePath);
+                            webClient.DownloadFile(new Uri(image), @"C:\Users\alekhristov\Pictures\HistogramTask\" + filePath);
                         }
                     }
                 }
