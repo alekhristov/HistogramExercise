@@ -14,16 +14,6 @@ namespace HistogramExercise
     class Histogram
     {
         private string name;
-        private Dictionary<double, long> histDict;
-        public Histogram()
-        {
-        }
-        public Histogram(string name, Dictionary<double, long> histDict)
-        {
-            this.name = name;
-            this.histDict = histDict;
-        }
-
 
         public void CreateExcelFile()
         {
@@ -79,11 +69,10 @@ namespace HistogramExercise
             {
                 cn.Open();
                 OleDbCommand cmd1 = new OleDbCommand("INSERT INTO [Sheet1$] " +
-                     "(Name,TopColor,Histogram) " +
-                     "VALUES(@value1,@value2,@value3)", cn);
+                     "(Name,TopColor) " +
+                     "VALUES(@value1,@value2)", cn);
                 cmd1.Parameters.AddWithValue("@value1", imageName);
                 cmd1.Parameters.AddWithValue("@value2", imageTopColor);
-                cmd1.Parameters.AddWithValue("@value3", imageName);
                 cmd1.ExecuteNonQuery();
             }
         }

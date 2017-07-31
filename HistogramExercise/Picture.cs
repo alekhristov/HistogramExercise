@@ -25,23 +25,11 @@ namespace HistogramExercise
 
         private void GetPixels(Bitmap bitmap, Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors, Histogram histogram)
         {
-            long r = 0;
-            long g = 0;
-            long b = 0;
-            var histDict = new Dictionary<double, long>();
-            for (int i = 0; i <= 255; i++)
-            {
-                histDict.Add(i, 0);
-            }
-
             for (int x = 0; x < bitmap.Width; x++)
             {
                 for (int y = 0; y < bitmap.Height; y++)
                 {
                     System.Drawing.Color pixel = bitmap.GetPixel(x, y);
-                    r += pixel.R;
-                    g += pixel.G;
-                    b += pixel.B;
 
                     FindingTheNearestColor(pixel, dictOfColors, topColors);
                 }
