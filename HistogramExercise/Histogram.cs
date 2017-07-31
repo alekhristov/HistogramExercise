@@ -13,14 +13,12 @@ namespace HistogramExercise
 {
     class Histogram
     {
-        private string name;
+        Application ExcelApp = new Application();
+        Workbook ExcelWorkBook = null;
+        Worksheet ExcelWorkSheet = null;
 
         public void CreateExcelFile()
         {
-            Application ExcelApp = new Application();
-            Workbook ExcelWorkBook = null;
-            Worksheet ExcelWorkSheet = null;
-
             ExcelApp.Visible = true;
             ExcelWorkBook = ExcelApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
             // ExcelWorkBook.Worksheets.Add(); //Adding New Sheet in Excel Workbook
