@@ -2,8 +2,8 @@
 {
     internal class BasicColor
     {
-        public string Name { get; set; }
-        public Color Color { get; set; }
+        public string Name { get; private set; }
+        public Color Color { get; private set; }
 
         private static BasicColor[] basicColors = new BasicColor[13] {
                 new BasicColor("black", new Color(0, 0, 0)),

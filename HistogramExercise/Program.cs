@@ -19,8 +19,8 @@ namespace HistogramExercise
 
     //Class Histogram:
     //	- create histogram with input pic file path
-    //	- export histogram in excell file(method in the class)
-    //	- import excell file to histogram(method in the class)
+    //	- export histogram in excel file(method in the class)
+    //	- import excel file to histogram(method in the class)
     internal class Program
     {
         private static void Main(string[] args)
@@ -43,12 +43,17 @@ namespace HistogramExercise
                 Console.WriteLine(ex.Message);
             }
 
-            string[] fileEntries = Directory.GetFiles(@"C:\Users\alekhristov\Pictures\HistogramTask\");
+            string[] fileEntries = Directory.GetFiles(@"C:\Users\alek.hristov\Pictures\HistogramTask\");
+
+            var histogram = new Histogram();
+            histogram.CreateExcelFile();
 
             foreach (string pictureName in fileEntries)
             {
+                var topColor = new Dictionary<string, int>();
                 var picture = new Picture(pictureName);
-                dictOfColors = picture.GetImagePixelsAndGetTheirColors(dictOfColors);
+                picture.GetImagePixelsAndGetTheirColors(dictOfColors, topColor, histogram);
+                histogram.CreateColorHistrogram(pictureName);
             }
 
             var topFiveColors = dictOfColors.OrderByDescending(a => a.Value).Take(5).ToList();

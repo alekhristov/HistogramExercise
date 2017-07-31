@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace HistogramExercise
 {
@@ -13,33 +14,51 @@ namespace HistogramExercise
             this.name = name;
         }
 
-        public Dictionary<BasicColor, int> GetImagePixelsAndGetTheirColors(Dictionary<BasicColor, int> dictOfColors)
+        public Dictionary<BasicColor, int> GetImagePixelsAndGetTheirColors(Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColor, Histogram histogram)
         {
             using (var bitmap = new Bitmap(name))
             {
-                GetPixels(bitmap, dictOfColors);
+                GetPixels(bitmap, dictOfColors, topColor, histogram);
             }
             return dictOfColors;
         }
 
-        private void GetPixels(Bitmap bitmap, Dictionary<BasicColor, int> dictOfColors)
+        private void GetPixels(Bitmap bitmap, Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors, Histogram histogram)
         {
+            long r = 0;
+            long g = 0;
+            long b = 0;
+            var histDict = new Dictionary<double, long>();
+            for (int i = 0; i <= 255; i++)
+            {
+                histDict.Add(i, 0);
+            }
+
             for (int x = 0; x < bitmap.Width; x++)
             {
                 for (int y = 0; y < bitmap.Height; y++)
                 {
                     System.Drawing.Color pixel = bitmap.GetPixel(x, y);
+                    r += pixel.R;
+                    g += pixel.G;
+                    b += pixel.B;
 
-                    FindingTheNearestColor(pixel, dictOfColors);
+                    FindingTheNearestColor(pixel, dictOfColors, topColors);
                 }
+            }
+            foreach (var color in topColors.OrderByDescending(a => a.Value).Take(1))
+            {
+                string imageTopColor = color.Key;
+                histogram.FillDataInExcelFile(imageTopColor, name);
             }
         }
 
-        private void FindingTheNearestColor(System.Drawing.Color pixel, Dictionary<BasicColor, int> dictOfColors)
+        private void FindingTheNearestColor(System.Drawing.Color pixel, Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColor)
         {
             double distance = double.MaxValue;
             double minDistance = double.MaxValue;
             BasicColor nearestColor = BasicColor.BasicColorsArray[0];
+            var currentColor = string.Empty;
 
             double r = pixel.R;
             double g = pixel.G;
@@ -53,7 +72,16 @@ namespace HistogramExercise
                 {
                     minDistance = distance;
                     nearestColor = basicColor;
+                    currentColor = (basicColor.Name).ToString();
                 }
+            }
+            if (!topColor.ContainsKey(currentColor))
+            {
+                topColor[currentColor] = 0;
+            }
+            if (topColor.ContainsKey(currentColor))
+            {
+                topColor[currentColor]++;
             }
             if (!dictOfColors.ContainsKey(nearestColor))
             {
