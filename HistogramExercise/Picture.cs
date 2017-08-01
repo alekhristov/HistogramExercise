@@ -8,11 +8,14 @@ namespace HistogramExercise
     internal class Picture
     {
         private string name;
+        private string imageTopColor;
 
         public Picture(string name)
         {
             this.name = name;
+            this.ImageTopColor = imageTopColor;
         }
+        public string ImageTopColor { get; set; }
 
         public Dictionary<BasicColor, int> GetImagePixelsAndGetTheirColors(Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors, Histogram histogram)
         {
@@ -36,12 +39,13 @@ namespace HistogramExercise
             }
             foreach (var color in topColors.OrderByDescending(a => a.Value).Take(1))
             {
-                string imageTopColor = color.Key;
+                imageTopColor = color.Key;
+                ImageTopColor = imageTopColor;
                 histogram.FillDataInExcelFile(imageTopColor, name);
             }
         }
 
-        private void FindingTheNearestColor(System.Drawing.Color pixel, Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColor)
+        private void FindingTheNearestColor(System.Drawing.Color pixel, Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors)
         {
             double distance = double.MaxValue;
             double minDistance = double.MaxValue;
@@ -63,13 +67,13 @@ namespace HistogramExercise
                     currentColor = (basicColor.Name).ToString();
                 }
             }
-            if (!topColor.ContainsKey(currentColor))
+            if (!topColors.ContainsKey(currentColor))
             {
-                topColor[currentColor] = 0;
+                topColors[currentColor] = 0;
             }
-            if (topColor.ContainsKey(currentColor))
+            if (topColors.ContainsKey(currentColor))
             {
-                topColor[currentColor]++;
+                topColors[currentColor]++;
             }
             if (!dictOfColors.ContainsKey(nearestColor))
             {

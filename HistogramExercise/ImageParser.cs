@@ -64,7 +64,7 @@ namespace HistogramExercise
         {
             string htmlString = LoadUrl();
 
-            var imgPattern = @"<img.+?src=[\""'](?<imgUrl>(?:https?|www|\/).+?)[\\""'].*?>";
+            var imgPattern = @"<img.+?=[\""'](?<imgUrl>(?:https?|www|\/).+?)[\\""'].*?>";
 
             var matchedImages = Regex.Matches(htmlString, imgPattern);
 

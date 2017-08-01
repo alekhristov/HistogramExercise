@@ -5,31 +5,17 @@ using System.Linq;
 
 namespace HistogramExercise
 {
-    //    HTML Parser, който търси всички URL-и на картинки, картинките могат да са.JPG, .PNG;
-    //    След това трябва да бъдат свалени в папка на компютъра.
-
-    //    За всяка записана картинка, създаваме един Histogram generator, който е записан в един excel file.
-    //    http://csharp.net-informations.com/excel/csharp-excel-chart.htm
-
-    //    Histogram Generator, минаваме през всички свалени картинки и правим 5 папки на диска, в които ще има всички картинки, които съдържат най-използваните цветове. Трябва да се намерят петте топ цвята.
-    //    В петте папки записваме по поне една картинка(в папка Blue - отиват картинките с топ-цвят синьо).
-
-    //To design a class, which contains all the color clusters, and has Name, Color, Fields with coefficients(0.3, 0.59, 0.11), и проверката да стане с foreach(за mindistance) - всичко ми е fields
-    //Class Picture - imagePath, imageTopColor, class в Picture - Histogram(); GetPixels() минава в class Picture
-
-    //Class Histogram:
-    //	- create histogram with input pic file path
-    //	- export histogram in excel file(method in the class)
-    //	- import excel file to histogram(method in the class)
     internal class Program
     {
         private static void Main(string[] args)
         {
-            string urlAddress = "http://yesofcorsa.com/red/";
+            //string urlAddress = "http://yesofcorsa.com/red/";
+            string urlAddress = "https://www.wallpaper.com/";
 
             var listOfImagePaths = new List<string>();
             var listOfHistogramPaths = new List<string>();
             var dictOfColors = new Dictionary<BasicColor, int>();
+            var imageTopColor = new Dictionary<string, string>();
 
             try
             {
@@ -51,14 +37,52 @@ namespace HistogramExercise
 
             foreach (string pictureName in fileEntries)
             {
-                var topColors = new Dictionary<string, int>();
+                var topColor = new Dictionary<string, int>();
                 var picture = new Picture(pictureName);
-                picture.GetImagePixelsAndGetTheirColors(dictOfColors, topColors, histogram);
+                picture.GetImagePixelsAndGetTheirColors(dictOfColors, topColor, histogram);
                 histogram.CreateColorHistrogram(pictureName, listOfHistogramPaths);
-            }
-                histogram.ExportHistogramsToExcel(listOfHistogramPaths);
 
-            var topFiveColors = dictOfColors.OrderByDescending(a => a.Value).Take(5).ToList();
+                if (!imageTopColor.ContainsKey(pictureName))
+                {
+                    imageTopColor[pictureName] = picture.ImageTopColor;
+                }
+            }
+            histogram.ExportHistogramsToExcel(listOfHistogramPaths);
+
+            CreateTopColorsFolders(dictOfColors);
+            SavePicturesToNewFolders(imageTopColor);
+        }
+
+        private static void SavePicturesToNewFolders(Dictionary<string, string> imageTopColor)
+        {
+            string[] filesindirectory = Directory.GetDirectories(@"C:\Users\alek.hristov\Desktop\HistogramTask");
+
+            foreach (var kvp in imageTopColor)
+            {
+                foreach (var subdir in filesindirectory)
+                {
+                    string folderColor = subdir.Substring(subdir.LastIndexOf(@"\")+1);
+                    if (kvp.Value == folderColor) 
+                    {
+                        string sourcePath = kvp.Key;
+                        string targetPath = $@"{subdir}{kvp.Key.Substring(kvp.Key.LastIndexOf(@"\"))}";
+
+                        File.Copy(sourcePath, targetPath, true);
+                    }
+                }
+            }
+        }
+
+        private static void CreateTopColorsFolders(Dictionary<BasicColor, int> dictOfColors)
+        {
+            foreach (var kvp in dictOfColors.OrderByDescending(a => a.Value).Take(5))
+            {
+                var topColorName = kvp.Key.Name;
+
+                string activeDir = @"C:\Users\alek.hristov\Desktop\HistogramTask";
+                string newPath = Path.Combine(activeDir, $"{topColorName}");
+                Directory.CreateDirectory(newPath);
+            }
         }
     }
 }

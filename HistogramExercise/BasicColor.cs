@@ -6,19 +6,19 @@
         public Color Color { get; private set; }
 
         private static BasicColor[] basicColors = new BasicColor[13] {
-                new BasicColor("black", new Color(0, 0, 0)),
-                new BasicColor("white", new Color(255, 255, 255)),
-                new BasicColor("red", new Color(255, 0, 0)),
-                new BasicColor("blue", new Color(0, 0, 255)),
-                new BasicColor("yellow", new Color(255, 255, 0)),
-                new BasicColor("orange", new Color(255, 165, 0)),
-                new BasicColor("grey", new Color(128, 128, 128)),
-                new BasicColor("green", new Color(0, 128, 0)),
-                new BasicColor("purple", new Color(128, 0, 128)),
-                new BasicColor("pink", new Color(255, 192, 203)),
-                new BasicColor("sky blue", new Color(0, 191, 255)),
-                new BasicColor("dark red", new Color(139, 0, 0)),
-                new BasicColor("beige", new Color(245, 245, 220)) };
+                new BasicColor("Black", new Color(0, 0, 0)),
+                new BasicColor("White", new Color(255, 255, 255)),
+                new BasicColor("Red", new Color(255, 0, 0)),
+                new BasicColor("Blue", new Color(0, 0, 255)),
+                new BasicColor("Yellow", new Color(255, 255, 0)),
+                new BasicColor("Orange", new Color(255, 165, 0)),
+                new BasicColor("Grey", new Color(128, 128, 128)),
+                new BasicColor("Green", new Color(0, 128, 0)),
+                new BasicColor("Purple", new Color(128, 0, 128)),
+                new BasicColor("Pink", new Color(255, 192, 203)),
+                new BasicColor("Sky blue", new Color(0, 191, 255)),
+                new BasicColor("Dark red", new Color(139, 0, 0)),
+                new BasicColor("Beige", new Color(245, 245, 220)) };
 
 
         public BasicColor(string name, Color color)

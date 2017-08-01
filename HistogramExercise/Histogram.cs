@@ -4,22 +4,17 @@ using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HistogramExercise
 {
     class Histogram
     {
-        private string name;
-        Application ExcelApp = new Application();
-        Workbook ExcelWorkBook = null;
-        Worksheet ExcelWorkSheet = null;
-
         public void CreateExcelFile()
         {
+            Application ExcelApp = new Application();
+            Workbook ExcelWorkBook = null;
+            Worksheet ExcelWorkSheet = null;
 
             ExcelApp.Visible = true;
             ExcelWorkBook = ExcelApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
@@ -36,7 +31,7 @@ namespace HistogramExercise
                 //    ExcelWorkSheet.Cells[i+2, 1] = i;
                 //}
 
-                ExcelWorkBook.SaveAs(@"C:\Users\alek.hristov\Desktop\Testing.xlsx");
+                ExcelWorkBook.SaveAs(@"C:\Users\alek.hristov\Desktop\HistogramTask\ExcelFile.xlsx");
                 ExcelWorkBook.Close();
                 ExcelApp.Quit();
                 Marshal.ReleaseComObject(ExcelWorkSheet);
@@ -61,7 +56,7 @@ namespace HistogramExercise
             var index = name.LastIndexOf(@"\");
             var imageName = name.Substring(index + 1);
 
-            string fileName = @"C:\Users\alek.hristov\Desktop\Testing.xlsx";
+            string fileName = @"C:\Users\alek.hristov\Desktop\HistogramTask\ExcelFile.xlsx";
             string connectionString = String.Format(@"Provider=Microsoft.ACE.OLEDB.12.0;" +
                     "Data Source={0};Extended Properties='Excel 12.0;HDR=YES;IMEX=0'", fileName);
 
@@ -117,28 +112,28 @@ namespace HistogramExercise
             }
             var histogramName = pictureName.Substring(pictureName.LastIndexOf(@"\"));
             histogramName = histogramName.Substring(0, histogramName.LastIndexOf("."));
-            img.Save($@"C:\Users\alek.hristov\Pictures\Histograms\{histogramName.ToString()}.jpeg");
+            img.Save($@"C:\Users\alek.hristov\Desktop\HistogramTask\Histograms\{histogramName.ToString()}.jpeg");
 
-            listOfHistogramPaths.Add($@"C:\Users\alek.hristov\Pictures\Histograms\{histogramName.ToString()}.jpeg");
+            listOfHistogramPaths.Add($@"C:\Users\alek.hristov\Desktop\HistogramTask\Histograms\{histogramName.ToString()}.jpeg");
         }
 
         public void ExportHistogramsToExcel(List<string> listOfHistogramPaths)
         {
             var xlApp = new Application();
-            Workbook xlWorkBook = xlApp.Workbooks.Open(@"C:\Users\alek.hristov\Desktop\Testing.xlsx");
+            Workbook xlWorkBook = xlApp.Workbooks.Open(@"C:\Users\alek.hristov\Desktop\HistogramTask\ExcelFile.xlsx");
             Worksheet xlWorkSheet = xlWorkBook.Sheets[1];
 
-            for (int i = 2; i <= listOfHistogramPaths.Count+1; i++)
+            for (int i = 2; i <= listOfHistogramPaths.Count + 1; i++)
             {
                 Range oRange = (Range)xlWorkSheet.Cells[i, 3];
                 float Left = (float)((double)oRange.Left);
                 float Top = (float)((double)oRange.Top);
                 const float ImageSize = 38;
-                xlWorkSheet.Shapes.AddPicture(listOfHistogramPaths[i-2], Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, Left, Top, ImageSize, ImageSize);
+                xlWorkSheet.Shapes.AddPicture(listOfHistogramPaths[i - 2], Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, Left, Top, ImageSize, ImageSize);
                 oRange.RowHeight = ImageSize + 2;
             }
 
-            xlWorkBook.SaveAs(@"C:\Users\alek.hristov\Desktop\Testing.xlsx");
+            xlWorkBook.SaveAs(@"C:\Users\alek.hristov\Desktop\HistogramTask\ExcelFile.xlsx");
             xlWorkBook.Close();
             xlApp.Quit();
         }
