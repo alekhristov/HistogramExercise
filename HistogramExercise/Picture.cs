@@ -14,11 +14,11 @@ namespace HistogramExercise
             this.name = name;
         }
 
-        public Dictionary<BasicColor, int> GetImagePixelsAndGetTheirColors(Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColor, Histogram histogram)
+        public Dictionary<BasicColor, int> GetImagePixelsAndGetTheirColors(Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors, Histogram histogram)
         {
             using (var bitmap = new Bitmap(name))
             {
-                GetPixels(bitmap, dictOfColors, topColor, histogram);
+                GetPixels(bitmap, dictOfColors, topColors, histogram);
             }
             return dictOfColors;
         }

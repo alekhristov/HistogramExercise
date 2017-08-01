@@ -13,12 +13,14 @@ namespace HistogramExercise
 {
     class Histogram
     {
+        private string name;
         Application ExcelApp = new Application();
         Workbook ExcelWorkBook = null;
         Worksheet ExcelWorkSheet = null;
 
         public void CreateExcelFile()
         {
+
             ExcelApp.Visible = true;
             ExcelWorkBook = ExcelApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
             // ExcelWorkBook.Worksheets.Add(); //Adding New Sheet in Excel Workbook
@@ -75,7 +77,7 @@ namespace HistogramExercise
             }
         }
 
-        public void CreateColorHistrogram(string pictureName)
+        public void CreateColorHistrogram(string pictureName, List<string> listOfHistogramPaths)
         {
             Bitmap bmp = new Bitmap(pictureName);
             int[] histogram = new int[256];
@@ -116,6 +118,29 @@ namespace HistogramExercise
             var histogramName = pictureName.Substring(pictureName.LastIndexOf(@"\"));
             histogramName = histogramName.Substring(0, histogramName.LastIndexOf("."));
             img.Save($@"C:\Users\alek.hristov\Pictures\Histograms\{histogramName.ToString()}.jpeg");
+
+            listOfHistogramPaths.Add($@"C:\Users\alek.hristov\Pictures\Histograms\{histogramName.ToString()}.jpeg");
+        }
+
+        public void ExportHistogramsToExcel(List<string> listOfHistogramPaths)
+        {
+            var xlApp = new Application();
+            Workbook xlWorkBook = xlApp.Workbooks.Open(@"C:\Users\alek.hristov\Desktop\Testing.xlsx");
+            Worksheet xlWorkSheet = xlWorkBook.Sheets[1];
+
+            for (int i = 2; i <= listOfHistogramPaths.Count+1; i++)
+            {
+                Range oRange = (Range)xlWorkSheet.Cells[i, 3];
+                float Left = (float)((double)oRange.Left);
+                float Top = (float)((double)oRange.Top);
+                const float ImageSize = 38;
+                xlWorkSheet.Shapes.AddPicture(listOfHistogramPaths[i-2], Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, Left, Top, ImageSize, ImageSize);
+                oRange.RowHeight = ImageSize + 2;
+            }
+
+            xlWorkBook.SaveAs(@"C:\Users\alek.hristov\Desktop\Testing.xlsx");
+            xlWorkBook.Close();
+            xlApp.Quit();
         }
 
     }

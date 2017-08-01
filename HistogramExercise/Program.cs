@@ -28,6 +28,7 @@ namespace HistogramExercise
             string urlAddress = "http://yesofcorsa.com/red/";
 
             var listOfImagePaths = new List<string>();
+            var listOfHistogramPaths = new List<string>();
             var dictOfColors = new Dictionary<BasicColor, int>();
 
             try
@@ -50,11 +51,12 @@ namespace HistogramExercise
 
             foreach (string pictureName in fileEntries)
             {
-                var topColor = new Dictionary<string, int>();
+                var topColors = new Dictionary<string, int>();
                 var picture = new Picture(pictureName);
-                picture.GetImagePixelsAndGetTheirColors(dictOfColors, topColor, histogram);
-                histogram.CreateColorHistrogram(pictureName);
+                picture.GetImagePixelsAndGetTheirColors(dictOfColors, topColors, histogram);
+                histogram.CreateColorHistrogram(pictureName, listOfHistogramPaths);
             }
+                histogram.ExportHistogramsToExcel(listOfHistogramPaths);
 
             var topFiveColors = dictOfColors.OrderByDescending(a => a.Value).Take(5).ToList();
         }
