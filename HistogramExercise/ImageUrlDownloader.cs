@@ -37,6 +37,7 @@ namespace HistogramExercise
                 //https://msdn.microsoft.com/en-us/library/system.windows.forms.savefiledialog(v=vs.110).aspx use instead hardcoding the file paths.
                 foreach (var image in listOfImagePaths)
                 {
+                    //User instead of string for the url address, instnace of Url class (.Net) so you can avoid hardcoded indexes like that.
                     var primaryUrlEndIndex = urlAddress.IndexOf(@"/", 9);
                     var primaryUrl = urlAddress.Substring(0, primaryUrlEndIndex+1);
                     var index = image.LastIndexOf(@"/");
