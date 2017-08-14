@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace HistogramExercise
 {
+    // One histogram for every picture. Fill all data from the histogram in the excell.
     class Histogram
     {
         public void CreateExcelFile()
