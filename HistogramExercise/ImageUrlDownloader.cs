@@ -7,6 +7,7 @@ namespace HistogramExercise
 {
     internal class ImageUrlDownloader
     {
+        //Remove
         private string urlAddress;
 
         public ImageUrlDownloader(string urlAddress)
