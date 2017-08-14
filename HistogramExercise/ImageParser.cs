@@ -9,7 +9,10 @@ namespace HistogramExercise
 {
     internal class ImageParser
     {
+        //Remove
         private string urlAddress;
+        
+        //Get property
         private List<string> listOfImagePaths;
 
         public ImageParser(string urlAddress)
@@ -60,6 +63,7 @@ namespace HistogramExercise
             return htmlString;
         }
 
+        //Method should be void
         public List<string> ExtractImages()
         {
             string htmlString = LoadUrl();
