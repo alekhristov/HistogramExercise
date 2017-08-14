@@ -5,8 +5,10 @@ using System.Net;
 
 namespace HistogramExercise
 {
+    //Unite with ImageParser
     internal class ImageUrlDownloader
     {
+        private const stirng DOWNLOADFILEPATH = @"C:\Users\alek.hristov\Desktop\HistogramTask\DownloadedPictures\";
         //Remove
         private string urlAddress;
 
@@ -32,6 +34,7 @@ namespace HistogramExercise
         {
             using (WebClient webClient = new WebClient())
             {
+                //https://msdn.microsoft.com/en-us/library/system.windows.forms.savefiledialog(v=vs.110).aspx use instead hardcoding the file paths.
                 foreach (var image in listOfImagePaths)
                 {
                     var primaryUrlEndIndex = urlAddress.IndexOf(@"/", 9);
@@ -39,15 +42,15 @@ namespace HistogramExercise
                     var index = image.LastIndexOf(@"/");
                     var filePath = image.Substring(index + 1);
 
-                    if (!File.Exists(@"C:\Users\alek.hristov\Desktop\HistogramTask\DownloadedPictures\" + filePath))
+                    if (!File.Exists(DOWNLOADFILEPATH + filePath))
                     {
                         if (image.StartsWith("/"))
                         {
-                            webClient.DownloadFile(new Uri(primaryUrl + image.Substring(1)), @"C:\Users\alek.hristov\Desktop\HistogramTask\DownloadedPictures\" + filePath);
+                            webClient.DownloadFile(new Uri(primaryUrl + image.Substring(1)), DOWNLOADFILEPATH + filePath);
                         }
                         else if (image.StartsWith(@"http"))
                         {
-                            webClient.DownloadFile(new Uri(image), @"C:\Users\alek.hristov\Desktop\HistogramTask\DownloadedPictures\" + filePath);
+                            webClient.DownloadFile(new Uri(image), DOWNLOADFILEPATH + filePath);
                         }
                     }
                 }
