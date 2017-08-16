@@ -9,8 +9,8 @@ namespace HistogramExercise
     {
         private static void Main(string[] args)
         {
-            //string urlAddress = "http://yesofcorsa.com/red/";
-            string urlAddress = "https://www.wallpaper.com/";
+            string urlAddress = "http://yesofcorsa.com/red/";
+            //string urlAddress = "https://www.wallpaper.com/";
 
             var listOfImagePaths = new List<string>();
             var listOfHistogramPaths = new List<string>();
@@ -19,18 +19,17 @@ namespace HistogramExercise
 
             try
             {
-                var imageParser = new ImageParser(urlAddress);
-                listOfImagePaths = imageParser.ExtractImages();
-
-                var imageUrlDownloader = new ImageUrlDownloader(urlAddress);
-                imageUrlDownloader.DownloadImagesFromUrl(listOfImagePaths);
+                var imageParser = new ImageParser(urlAddress, listOfImagePaths);
+                imageParser.ExtractImages();
+                imageParser.DownloadImagesFromUrl(); 
             }
+
             catch (ArgumentNullException ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            string[] fileEntries = Directory.GetFiles(@"C:\Users\alek.hristov\Pictures\HistogramTask\");
+            string[] fileEntries = Directory.GetFiles(@"C:\Users\alek.hristov\Desktop\HistogramTask\DownloadedPictures");
 
             var histogram = new Histogram();
             histogram.CreateExcelFile();
@@ -39,7 +38,11 @@ namespace HistogramExercise
             {
                 var topColor = new Dictionary<string, int>();
                 var picture = new Picture(pictureName);
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine($"Getting image pixels and colors of image: {pictureName}...");
                 picture.GetImagePixelsAndGetTheirColors(dictOfColors, topColor, histogram);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Creating color histogram of image: {pictureName}...");
                 histogram.CreateColorHistrogram(pictureName, listOfHistogramPaths);
 
                 if (!imageTopColor.ContainsKey(pictureName))
@@ -51,6 +54,10 @@ namespace HistogramExercise
 
             CreateTopColorsFolders(dictOfColors);
             SavePicturesToNewFolders(imageTopColor);
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("CONGRATULATIONS YOUR TASK IS COMPLETED!!!");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         private static void SavePicturesToNewFolders(Dictionary<string, string> imageTopColor)

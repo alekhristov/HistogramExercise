@@ -9,16 +9,15 @@ namespace HistogramExercise
     {
         private string name;
         
-        //Remove
-        private string imageTopColor;
-
         public Picture(string name)
         {
             this.name = name;
-            // ??
-            this.ImageTopColor = imageTopColor;
         }
-        public string ImageTopColor { get; set; }
+        
+        public string ImageTopColor
+        {
+            get; private set;
+        }
 
         public Dictionary<BasicColor, int> GetImagePixelsAndGetTheirColors(Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors, Histogram histogram)
         {
@@ -45,9 +44,9 @@ namespace HistogramExercise
             
             foreach (var color in topColors.OrderByDescending(a => a.Value).Take(1))
             {
-                imageTopColor = color.Key;
+                string imageTopColor = color.Key;
                 ImageTopColor = imageTopColor;
-                
+
                 //Get rid of th Histogram dependency.
                 histogram.FillDataInExcelFile(imageTopColor, name);
             }

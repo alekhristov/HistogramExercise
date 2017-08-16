@@ -9,35 +9,27 @@ namespace HistogramExercise
 {
     internal class ImageParser
     {
-        //Remove
-        private string urlAddress;
-        
-        //Get property
-        private List<string> listOfImagePaths;
+        private const string DOWNLOADFILEPATH = @"C:\Users\alek.hristov\Desktop\HistogramTask\DownloadedPictures\";
 
-        public ImageParser(string urlAddress)
+        public ImageParser(string urlAddress, List<string> listOfImagePaths)
         {
             this.UrlAddress = urlAddress;
-            this.listOfImagePaths = new List<string>();
+            this.ListOfImagePaths = listOfImagePaths;
         }
 
         public string UrlAddress
         {
-            get { return this.urlAddress; }
-            private set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("Parameter cannot be null");
-                }
-                this.urlAddress = value;
-            }
+            get; private set;
+        }
+        public List<string> ListOfImagePaths
+        {
+            get; private set;
         }
 
         private string LoadUrl()
         {
             string htmlString = string.Empty;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlAddress);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(UrlAddress);
             request.Proxy.Credentials = CredentialCache.DefaultCredentials;
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
@@ -64,7 +56,7 @@ namespace HistogramExercise
         }
 
         //Method should be void
-        public List<string> ExtractImages()
+        public void ExtractImages()
         {
             string htmlString = LoadUrl();
 
@@ -78,10 +70,40 @@ namespace HistogramExercise
 
                 if (imgUrl.EndsWith("png") || imgUrl.EndsWith("jpg") || imgUrl.EndsWith("jpeg"))
                 {
-                    listOfImagePaths.Add(match.Groups["imgUrl"].Value);
+                    ListOfImagePaths.Add(match.Groups["imgUrl"].Value);
                 }
             }
-            return listOfImagePaths;
+        }
+        public void DownloadImagesFromUrl()
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                //https://msdn.microsoft.com/en-us/library/system.windows.forms.savefiledialog(v=vs.110).aspx use instead hardcoding the file paths.
+                foreach (var image in ListOfImagePaths)
+                {
+                    //Use instead of string for the url address, instance of Url class (.Net) so you can avoid hardcoded indexes like that.
+                    var primaryUrlEndIndex = UrlAddress.IndexOf(@"/", 9);
+                    var primaryUrl = UrlAddress.Substring(0, primaryUrlEndIndex + 1);
+                    var index = image.LastIndexOf(@"/");
+                    var filePath = image.Substring(index + 1);
+
+                    if (!File.Exists(DOWNLOADFILEPATH + filePath))
+                    {
+                        if (image.StartsWith("/"))
+                        {
+                            webClient.DownloadFile(new Uri(primaryUrl + image.Substring(1)), DOWNLOADFILEPATH + filePath);
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"Downloading image {image}");
+                        }
+                        else if (image.StartsWith(@"http"))
+                        {
+                            webClient.DownloadFile(new Uri(image), DOWNLOADFILEPATH + filePath);
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"Downloading image {image}");
+                        }
+                    }
+                }
+            }
         }
     }
 }

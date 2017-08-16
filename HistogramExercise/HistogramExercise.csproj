@@ -38,6 +38,9 @@
       <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ShellProgressBar, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ShellProgressBar.3.0.0.0\lib\NET4\ShellProgressBar.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -54,7 +57,6 @@
     <Compile Include="Histogram.cs" />
     <Compile Include="Picture.cs" />
     <Compile Include="ImageParser.cs" />
-    <Compile Include="ImageUrlDownloader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
