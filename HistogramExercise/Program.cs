@@ -21,7 +21,7 @@ namespace HistogramExercise
             {
                 var imageParser = new ImageParser(urlAddress, listOfImagePaths);
                 imageParser.ExtractImages();
-                imageParser.DownloadImagesFromUrl(); 
+                imageParser.DownloadImagesFromUrl();
             }
 
             catch (ArgumentNullException ex)
@@ -31,8 +31,9 @@ namespace HistogramExercise
 
             string[] fileEntries = Directory.GetFiles(@"C:\Users\alek.hristov\Desktop\HistogramTask\DownloadedPictures");
 
-            var histogram = new Histogram();
-            histogram.CreateExcelFile();
+            //var histogram = new Histogram();
+            Histogram.CreateCommonExcelFile();
+            var counter = 1;
 
             foreach (string pictureName in fileEntries)
             {
@@ -40,17 +41,22 @@ namespace HistogramExercise
                 var picture = new Picture(pictureName);
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine($"Getting image pixels and colors of image: {pictureName}...");
-                picture.GetImagePixelsAndGetTheirColors(dictOfColors, topColor, histogram);
+                picture.GetImagePixelsAndGetTheirColors(dictOfColors, topColor);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Creating color histogram of image: {pictureName}...");
-                histogram.CreateColorHistrogram(pictureName, listOfHistogramPaths);
+                Histogram.CreateColorHistrogram(pictureName, listOfHistogramPaths);
 
                 if (!imageTopColor.ContainsKey(pictureName))
                 {
                     imageTopColor[pictureName] = picture.ImageTopColor;
                 }
+
+                var histogram = new Histogram(pictureName, string.Format($@"C:\Users\alek.hristov\Desktop\HistogramTask\{counter}-Histogram.xlsx"));
+                counter++;
+                histogram.ExportToExcel();
             }
-            histogram.ExportHistogramsToExcel(listOfHistogramPaths);
+
+            Histogram.ExportHistogramsToExcel(listOfHistogramPaths);
 
             CreateTopColorsFolders(dictOfColors);
             SavePicturesToNewFolders(imageTopColor);
@@ -68,8 +74,8 @@ namespace HistogramExercise
             {
                 foreach (var subdir in filesindirectory)
                 {
-                    string folderColor = subdir.Substring(subdir.LastIndexOf(@"\")+1);
-                    if (kvp.Value == folderColor) 
+                    string folderColor = subdir.Substring(subdir.LastIndexOf(@"\") + 1);
+                    if (kvp.Value == folderColor)
                     {
                         string sourcePath = kvp.Key;
                         string targetPath = $@"{subdir}{kvp.Key.Substring(kvp.Key.LastIndexOf(@"\"))}";

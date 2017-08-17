@@ -19,18 +19,18 @@ namespace HistogramExercise
             get; private set;
         }
 
-        public Dictionary<BasicColor, int> GetImagePixelsAndGetTheirColors(Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors, Histogram histogram)
+        public Dictionary<BasicColor, int> GetImagePixelsAndGetTheirColors(Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors)
         {
             using (var bitmap = new Bitmap(name))
             {
-                GetPixels(bitmap, dictOfColors, topColors, histogram);
+                GetPixels(bitmap, dictOfColors, topColors);
             }
             
             return dictOfColors;
         }
 
         //Get rid of th Histogram dependency.
-        private void GetPixels(Bitmap bitmap, Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors, Histogram histogram)
+        private void GetPixels(Bitmap bitmap, Dictionary<BasicColor, int> dictOfColors, Dictionary<string, int> topColors)
         {
             for (int x = 0; x < bitmap.Width; x++)
             {
@@ -48,7 +48,7 @@ namespace HistogramExercise
                 ImageTopColor = imageTopColor;
 
                 //Get rid of th Histogram dependency.
-                histogram.FillDataInExcelFile(imageTopColor, name);
+                Histogram.FillDataInExcelFile(imageTopColor, name);
             }
         }
 

@@ -55,7 +55,6 @@ namespace HistogramExercise
             return htmlString;
         }
 
-        //Method should be void
         public void ExtractImages()
         {
             string htmlString = LoadUrl();
